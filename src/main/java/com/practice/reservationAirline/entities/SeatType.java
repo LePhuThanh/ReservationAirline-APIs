@@ -16,8 +16,9 @@ public class SeatType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seat_type_id")
     private Integer seatTypeId;
-    private BigDecimal price;
     @Column(name = "seat_type_name")
     private String seatTypeName;
+    private BigDecimal price;
+
 
 }

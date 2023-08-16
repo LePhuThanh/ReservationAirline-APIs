@@ -23,12 +23,11 @@ public class User {
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
-    @JsonIgnore // ignore when change ==> JSON
-    private String password;
     private String phone;
     @Column(name = "user_name")
     private String userName;
-
+    @JsonIgnore // ignore when change ==> JSON
+    private String password;
 
     //==> Employee
     @OneToOne(mappedBy = "userId") //attribute

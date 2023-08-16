@@ -18,7 +18,16 @@ public class Ticket {
     @Column(name = "ticket_id")
     private Integer ticketId;
 
-    private Boolean isDelete;
+    //==> Flight
+    @ManyToOne
+    @JoinColumn(name = "flight_number", referencedColumnName = "flight_number")
+    @JsonBackReference
+    Flight flightNumber;
+
+    //==> Seat
+    @ManyToOne
+    @JoinColumn(name = "seat_number", referencedColumnName = "seat_number")
+    private Seat seatNumber; //seat
 
     //==> User
     @ManyToOne
@@ -26,16 +35,7 @@ public class Ticket {
     @JsonBackReference
     private User userId;
 
-    //==> Seat
-    @ManyToOne
-    @JoinColumn(name = "seat_number", referencedColumnName = "seat_number")
-    private Seat seatNumber; //seat
-
-    //==> Flight
-    @ManyToOne
-    @JoinColumn(name = "flight_number", referencedColumnName = "flight_number")
-    @JsonBackReference
-    Flight flightNumber;
+    private Boolean isDelete;
 
     public Boolean getDelete() {
         return isDelete;
