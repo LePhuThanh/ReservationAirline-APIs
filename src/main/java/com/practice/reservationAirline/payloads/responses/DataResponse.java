@@ -1,4 +1,4 @@
-package com.practice.reservationAirline.services.responses;
+package com.practice.reservationAirline.payloads.responses;
 
 import lombok.Data;
 

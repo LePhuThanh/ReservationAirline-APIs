@@ -1,29 +1,43 @@
-//package com.practice.reservationAirline.controllers;
-//
-//
-//import com.practice.reservationAirline.entities.Passenger;
-//import com.practice.reservationAirline.services.Impl.PassengerService;
-//import com.practice.reservationAirline.services.responses.DataResponse;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//import java.util.List;
-//
-//@RestController
-//@RequestMapping(path = "/Passenger")
-//public class PassengerController {
-//    @Autowired
-//    private PassengerService passengerService;
-//    //getAll
-//    @GetMapping(value = "/getAllPassenger")
-//    public DataResponse getAllPassenger(){
-//        List<Passenger> passenger = passengerService.getAllPassenger();
-//        if(passenger.size() = null) {
-//
-//        }
-//    }
-//
-//
-//}
+package com.practice.reservationAirline.controllers;
+
+
+import com.practice.reservationAirline.entities.Passenger;
+import com.practice.reservationAirline.handlers.CustomException;
+import com.practice.reservationAirline.payloads.requests.PassengerRequest;
+import com.practice.reservationAirline.services.PassengerService;
+import com.practice.reservationAirline.payloads.responses.DataResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(path = "/Passenger")
+public class PassengerController {
+    @Autowired
+//    @Qualifier("PassengerServiceImpl")
+    private PassengerService passengerService;
+
+    //localhost:8080/Passenger/getAllPassenger
+    @GetMapping(value = "/getAllPassenger")
+    public DataResponse getAllPassenger(){
+        List<Passenger> passenger = passengerService.getAllPassenger();
+        if(passenger.size() == 0) {
+            throw new CustomException("404", "Not found any passengers");
+        }
+        return new DataResponse("200", passenger);
+    }
+
+    //employee
+    @PostMapping(value = "/insertNewPassenger", consumes = "application/json;charset=UTF-8")
+    public DataResponse addTicket(@RequestBody PassengerRequest passengerRequest) {
+        Passenger passenger = passengerService.insertNewPassenger(passengerRequest);
+        if(passenger == null){
+            throw new CustomException("500", "Insert passenger Failed");
+        }
+        return new DataResponse("200", passenger);
+    }
+
+
+}

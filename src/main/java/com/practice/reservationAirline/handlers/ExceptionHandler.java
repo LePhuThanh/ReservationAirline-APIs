@@ -1,6 +1,6 @@
 package com.practice.reservationAirline.handlers;
 
-import com.practice.reservationAirline.services.responses.DataResponse;
+import com.practice.reservationAirline.payloads.responses.DataResponse;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -20,6 +20,7 @@ public class ExceptionHandler {
     //HttpMessageConversionException
     //Wrong format HTTP data, wrong enter data
     @org.springframework.web.bind.annotation.ExceptionHandler(HttpMessageConversionException.class)
+    @ResponseBody
     public DataResponse handleHttpMessageConversation(HttpMessageConversionException e) {
         e.printStackTrace();
         return new DataResponse("400" , e.getMessage());
@@ -28,6 +29,7 @@ public class ExceptionHandler {
 
     //CustomException
     @org.springframework.web.bind.annotation.ExceptionHandler(CustomException.class)
+    @ResponseBody
     public DataResponse handleCustomException(CustomException e) {
         e.printStackTrace();
         return new DataResponse(e.getStatus(), e.getMessage());
@@ -35,12 +37,14 @@ public class ExceptionHandler {
     //UnsupportedEncodingException
     // Wrong a text include unsupported characters
     @org.springframework.web.bind.annotation.ExceptionHandler(UnsupportedEncodingException.class)
+    @ResponseBody
     public DataResponse handleUnsupportedEncodingException(UnsupportedEncodingException e) {
         e.printStackTrace();
         return new DataResponse("1012" , e.getMessage());
     }
     //Exception
     @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
+    @ResponseBody
     public DataResponse handleDefaultException(Exception e) {
         e.printStackTrace();
         return new DataResponse("500" , e.getMessage());
