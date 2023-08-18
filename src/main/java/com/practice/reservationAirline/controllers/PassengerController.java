@@ -4,6 +4,7 @@ package com.practice.reservationAirline.controllers;
 import com.practice.reservationAirline.entities.Passenger;
 import com.practice.reservationAirline.handlers.CustomException;
 import com.practice.reservationAirline.payloads.requests.PassengerRequest;
+import com.practice.reservationAirline.repositories.PassengerRepository;
 import com.practice.reservationAirline.services.PassengerService;
 import com.practice.reservationAirline.payloads.responses.DataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import java.util.List;
 @RequestMapping(path = "/Passenger")
 public class PassengerController {
     @Autowired
-//    @Qualifier("PassengerServiceImpl")
+    @Qualifier("PassengerServiceImpl")
     private PassengerService passengerService;
 
     //localhost:8080/Passenger/getAllPassenger
@@ -28,6 +29,31 @@ public class PassengerController {
         }
         return new DataResponse("200", passenger);
     }
+//    @GetMapping(value = "/getPassengerByUserId/{id}")
+//    public DataResponse getPassengerUserById(@PathVariable Integer userId){
+//        List<Passenger> passengerByUserId = passengerService.getPassengerByUserId(userId);
+//        if(passengerByUserId.size() == 0) {
+//            throw new CustomException("500","Passenger is not found");
+//        }
+//        return new DataResponse("200", passengerByUserId);
+//    }
+    @GetMapping(value = "/getPassengerByPassport/{passport}")
+    public DataResponse getPassengerByPassport(@PathVariable String passport){
+        List <Passenger> passengerByPassport = passengerService.getPassengerByPassport(passport);
+        if(passengerByPassport.size() == 0) {
+            throw new CustomException("500", "Passenger is not found");
+        }
+        return new DataResponse ("200",passengerByPassport);
+    }
+    @GetMapping(value = "/getPassengerByPaymentCardNumber/{paymentCardNumber}")
+    public DataResponse getPassengerByPaymentCardNumber(@PathVariable String paymentCardNumber){
+        List<Passenger> passengerByPaymentCardNumber = passengerService.getPassengerByPaymentCardNumber(paymentCardNumber);
+        if(passengerByPaymentCardNumber.size() == 0) {
+            throw new CustomException("500", "Passenger is not found");
+        }
+           return new DataResponse("200", passengerByPaymentCardNumber);
+    }
+
 
     //employee
     @PostMapping(value = "/insertNewPassenger", consumes = "application/json;charset=UTF-8")
@@ -38,6 +64,7 @@ public class PassengerController {
         }
         return new DataResponse("200", passenger);
     }
+
 
 
 }
