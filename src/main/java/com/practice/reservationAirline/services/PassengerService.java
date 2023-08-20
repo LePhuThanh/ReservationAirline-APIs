@@ -13,7 +13,7 @@ public interface PassengerService {
     public Passenger getPassengerById(Integer passengerId);
     public List<Passenger> getPassengerByPaymentCardNumber(String paymentCardNumber);
     public List<Passenger> getPassengerByPassport(String passport);
-//    public List<Passenger> getPassengerByUserId(Integer userId);
+    public List<Passenger>  getPassengerByUserId(Integer userId);
 
 
     public Passenger insertNewPassenger(PassengerRequest passengerRequest);

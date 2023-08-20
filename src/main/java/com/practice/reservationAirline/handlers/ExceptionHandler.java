@@ -25,8 +25,6 @@ public class ExceptionHandler {
         e.printStackTrace();
         return new DataResponse("400" , e.getMessage());
     }
-
-
     //CustomException
     @org.springframework.web.bind.annotation.ExceptionHandler(CustomException.class)
     @ResponseBody

@@ -4,7 +4,7 @@ import com.practice.reservationAirline.entities.Passenger;
 import com.practice.reservationAirline.entities.User;
 import com.practice.reservationAirline.payloads.requests.PassengerRequest;
 import com.practice.reservationAirline.repositories.PassengerRepository;
-//import com.practice.reservationAirline.repositories.UserRepository;
+import com.practice.reservationAirline.repositories.UserRepository;
 import com.practice.reservationAirline.services.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,14 +15,14 @@ import java.util.List;
 public class PassengerServiceImpl implements PassengerService {
     @Autowired
     private PassengerRepository passengerRepository;
-//    @Autowired
-//    private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
     //method assign value to passenger
     public Passenger assignValueToPassenger(Passenger passenger, PassengerRequest passengerRequest){
         passenger.setPassengerId(passengerRequest.getPassengerId());
         passenger.setPassport(passengerRequest.getPassport());
         passenger.setPaymentCardNumber(passengerRequest.getPaymentCardNumber());
-        passenger.setUserId(passengerRequest.getUserId());
+        passenger.setUserId(userRepository.findByUserId(passengerRequest.getPassengerId()));
         return passenger;
     }
     //GET
@@ -38,11 +38,11 @@ public class PassengerServiceImpl implements PassengerService {
     public List<Passenger> getPassengerByPassport(String passport){
         return passengerRepository.findByPassport(passport);
     }
-//    @Override
-//    public List<Passenger> getPassengerByUserId(Integer userId){
-//        User userByUserId = userRepository.findByUserId(userId);
-//        return passengerRepository.findByUserId(userByUserId);
-//    }
+    @Override
+    public List<Passenger> getPassengerByUserId(Integer userId){
+        User userByUserId = userRepository.findByUserId(userId);
+        return passengerRepository.findByUserId(userByUserId);
+    }
 
     @Override
     public List<Passenger> getAllPassenger(){
