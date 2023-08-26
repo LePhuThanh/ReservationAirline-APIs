@@ -12,5 +12,7 @@ import java.util.List;
 public interface PassengerRepository extends JpaRepository<Passenger, Integer> {
     List<Passenger> findByPaymentCardNumber(String paymentCardNumber);
     List<Passenger> findByPassport(String passport);
-    List <Passenger> findByUserId(User userId);
+    List<Passenger> findByUserId(User userId);
+    List<Passenger> findByPassengerName(String passengerName);
+
 }

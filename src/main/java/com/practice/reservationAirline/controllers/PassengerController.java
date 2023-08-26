@@ -2,13 +2,14 @@ package com.practice.reservationAirline.controllers;
 
 
 import com.practice.reservationAirline.entities.Passenger;
-import com.practice.reservationAirline.handlers.CustomException;
+import com.practice.reservationAirline.handlers.customExceptions.CustomException;
 import com.practice.reservationAirline.payloads.requests.PassengerRequest;
-import com.practice.reservationAirline.repositories.PassengerRepository;
 import com.practice.reservationAirline.services.PassengerService;
 import com.practice.reservationAirline.payloads.responses.DataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,58 +24,85 @@ public class PassengerController {
     //GET
     //localhost:8080/Passenger/getAllPassenger
     @GetMapping(value = "/getAllPassenger")
-    public DataResponse getAllPassenger(){
+    public ResponseEntity<DataResponse> getAllPassenger(){
         List<Passenger> passenger = passengerService.getAllPassenger();
-        if(passenger.size() == 0) {
-            throw new CustomException("404", "Not found any passengers");
+        if(!passenger.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new DataResponse("200", "Get all passenger successfully", passenger));
         }
-        return new DataResponse("200", passenger ,"Get all passenger successfully");
+            throw new CustomException("404", "Not found any passengers");
     }
     @GetMapping(value = "/getPassengerByPassport/{passport}")
-    public DataResponse getPassengerByPassport(@PathVariable String passport){
+    public ResponseEntity<DataResponse> getPassengerByPassport(@PathVariable String passport){
         List <Passenger> passengerByPassport = passengerService.getPassengerByPassport(passport);
-        if(passengerByPassport.size() == 0) {
-            throw new CustomException("500", "Passenger is not found");
+        if(!passengerByPassport.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new DataResponse ("200","Get passenger by passport successfully",passengerByPassport));
         }
-        return new DataResponse ("200",passengerByPassport,"Get passenger by passport successfully");
+        throw new CustomException("500", "Passenger is not found");
     }
+
     @GetMapping(value = "/getPassengerByPaymentCardNumber/{paymentCardNumber}")
-    public DataResponse getPassengerByPaymentCardNumber(@PathVariable String paymentCardNumber){
+    public ResponseEntity<DataResponse> getPassengerByPaymentCardNumber(@PathVariable String paymentCardNumber){
         List<Passenger> passengerByPaymentCardNumber = passengerService.getPassengerByPaymentCardNumber(paymentCardNumber);
-        if(passengerByPaymentCardNumber.size() == 0) {
-            throw new CustomException("500", "Passenger is not found");
+        if(!passengerByPaymentCardNumber.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new DataResponse ("200","Get passenger by payment card number successfully", passengerByPaymentCardNumber));
         }
-           return new DataResponse("200", passengerByPaymentCardNumber,"Get passenger by payment card number successfully");
+        throw new CustomException("500", "Passenger is not found");
     }
     @GetMapping(value = "/getPassengerByUserId/{userId}")
-    public DataResponse getPassengerByUserId(@PathVariable Integer userId){
+    public ResponseEntity<DataResponse> getPassengerByUserId(@PathVariable Integer userId){
         List<Passenger> passengerByUserId = passengerService.getPassengerByUserId(userId);
-        if(passengerByUserId.size() == 0) {
-            throw new CustomException("500","Passenger is not found");
+        if(!passengerByUserId.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new DataResponse ("200", "Get passenger by user id successfully", passengerByUserId));
         }
-        return new DataResponse("200", passengerByUserId, "Get passenger by user id successfully");
+        throw new CustomException("500", "Passenger is not found");
     }
 
     @GetMapping(value = "/getPassengerById/{passengerId}")
-    public DataResponse getPassengerById(@PathVariable Integer passengerId){
+    public ResponseEntity<DataResponse> getPassengerById(@PathVariable Integer passengerId){
         Passenger passengerById = passengerService.getPassengerById(passengerId);
-        if(passengerById == null) {
-            throw new CustomException("500",  "Passenger is not found");
+        if(passengerById != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new DataResponse ("200", "Get passenger by id successfully", passengerById));
         }
-        return new DataResponse("200",passengerById , "Get passenger by id successfully");
-}
+        throw new CustomException("500", "Passenger is not found");
+    }
 
     //POST
     //employee
-    @PostMapping(value = "/insertNewPassenger", consumes = "application/json;charset=UTF-8")
-    public DataResponse addTicket(@RequestBody PassengerRequest passengerRequest) {
-        Passenger passenger = passengerService.insertNewPassenger(passengerRequest);
-        if(passenger == null){
-            throw new CustomException("500", "Insert passenger Failed");
+    @PostMapping(value = "/insertNewPassenger", consumes = "application/json;charset=UTF-8") // add ticket
+    public ResponseEntity<DataResponse> addTicket(@RequestBody PassengerRequest passengerRequest) {
+        Passenger passengerAddTicket = passengerService.insertNewPassenger(passengerRequest);
+        if(passengerAddTicket != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new DataResponse("200","Insert new passenger successfully", passengerAddTicket));
         }
-        return new DataResponse("200", passenger,"Insert new passenger successfully");
+        throw new CustomException("500", "Insert passenger failed");
     }
+    //
 
-
+    //DELETE
+    @DeleteMapping(value = "/deletePassengerById/{passengerId}") // delete ticket
+    public ResponseEntity<DataResponse> deletePassengerById (@PathVariable Integer passengerId) {
+        Boolean isDeletePassenger = passengerService.deletePassengerById(passengerId);
+        if (isDeletePassenger) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new DataResponse("200", "Delete the passenger successfully", ""));
+        }
+           throw new CustomException("500", "Delete passenger failed");
+    }
+    //UPDATE
+    @PutMapping(value = "/updatePassenger")
+    public ResponseEntity<DataResponse> updatePassenger(@RequestBody PassengerRequest passengerRequest) {
+        Passenger updatePassenger = passengerService.updatePassenger(passengerRequest);
+        if(updatePassenger != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                new DataResponse("200", "Update the passenger successfully", updatePassenger));
+        }
+        throw new CustomException("500", "Update the passenger failed");
+    }
 
 }

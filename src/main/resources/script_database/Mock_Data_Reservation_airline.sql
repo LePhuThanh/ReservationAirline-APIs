@@ -14,9 +14,9 @@ INSERT INTO reservation_airline.airline VALUES (2002, 250);
 INSERT INTO reservation_airline.employee VALUES (1,1000 ,4);
 INSERT INTO reservation_airline.employee VALUES (2,500 ,5);
 
-INSERT INTO reservation_airline.passenger VALUES (1,1 ,231256488 ,5024532465538);
-INSERT INTO reservation_airline.passenger VALUES (2,2 ,231524746 ,5055632545587);
-INSERT INTO reservation_airline.passenger VALUES (3,3 ,231023654 ,5056325485674);
+INSERT INTO reservation_airline.passenger VALUES (1,1, 'Nguyen Van Teo' ,231256488 ,5024532465538);
+INSERT INTO reservation_airline.passenger VALUES (2,2, 'Le Van Ti' ,231524746 ,5055632545587);
+INSERT INTO reservation_airline.passenger VALUES (3,3, 'Tran Thi Nhung' ,231023654 ,5056325485674);
 
 INSERT INTO reservation_airline.seat_type VALUES (50,1,'Normal');
 INSERT INTO reservation_airline.seat_type VALUES (250,2,'VIP');

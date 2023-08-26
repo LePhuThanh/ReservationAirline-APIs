@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PassengerRequest {
     private Integer passengerId;
+    private String passengerName;
     private String passport;
     private String paymentCardNumber;
     private int userId;

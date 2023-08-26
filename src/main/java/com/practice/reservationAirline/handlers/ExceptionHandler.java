@@ -1,12 +1,17 @@
 package com.practice.reservationAirline.handlers;
 
+import com.practice.reservationAirline.handlers.customExceptions.CustomException;
 import com.practice.reservationAirline.payloads.responses.DataResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.UnsupportedEncodingException;
 
+
+//Create @ExceptionHandler to handle Exception in class Controller
 @RestControllerAdvice // Global exception handlers
 public class ExceptionHandler {
     //RuntimeException
@@ -25,13 +30,6 @@ public class ExceptionHandler {
         e.printStackTrace();
         return new DataResponse("400" , e.getMessage());
     }
-    //CustomException
-    @org.springframework.web.bind.annotation.ExceptionHandler(CustomException.class)
-    @ResponseBody
-    public DataResponse handleCustomException(CustomException e) {
-        e.printStackTrace();
-        return new DataResponse(e.getStatus(), e.getMessage());
-    }
     //UnsupportedEncodingException
     // Wrong a text include unsupported characters
     @org.springframework.web.bind.annotation.ExceptionHandler(UnsupportedEncodingException.class)
@@ -47,4 +45,15 @@ public class ExceptionHandler {
         e.printStackTrace();
         return new DataResponse("500" , e.getMessage());
     }
+
+
+    //CustomException
+    @org.springframework.web.bind.annotation.ExceptionHandler(CustomException.class)
+    @ResponseBody
+    public DataResponse handleCustomException(CustomException e) {
+        e.printStackTrace();
+        return new DataResponse(e.getStatus(), e.getMessage());
+    }
+
+
 }

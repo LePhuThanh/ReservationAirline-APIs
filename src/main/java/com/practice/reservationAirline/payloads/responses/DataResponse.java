@@ -12,10 +12,14 @@ public class DataResponse {
         this.message = message;
         this.data = null;
     }
-    public DataResponse (String status, Object data, String message) {
+    public DataResponse (String status, String message,Object data) {
         this.status = status;
-//        this.message = null;
         this.message = message;
+        this.data = data;
+    }
+    public DataResponse (String status, Object data ) {
+        this.status = status;
+        this.message = null;
         this.data = data;
 
     }

@@ -1,4 +1,4 @@
-package com.practice.reservationAirline.handlers;
+package com.practice.reservationAirline.handlers.customExceptions;
 
 import lombok.Getter;
 import lombok.Setter;

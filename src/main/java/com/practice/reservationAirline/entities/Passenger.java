@@ -15,6 +15,8 @@ public class Passenger {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "passenger_id")
     private Integer passengerId;
+    @Column(name = "passenger_name")
+    private String passengerName;
     private String passport;
     @Column(name = "payment_card_number")
     private String paymentCardNumber;

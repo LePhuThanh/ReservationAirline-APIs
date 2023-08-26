@@ -2,6 +2,7 @@ package com.practice.reservationAirline.services.Impl;
 
 import com.practice.reservationAirline.entities.Passenger;
 import com.practice.reservationAirline.entities.User;
+import com.practice.reservationAirline.handlers.customExceptions.CustomException;
 import com.practice.reservationAirline.payloads.requests.PassengerRequest;
 import com.practice.reservationAirline.repositories.PassengerRepository;
 import com.practice.reservationAirline.repositories.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 @Service("PassengerServiceImpl")
 public class PassengerServiceImpl implements PassengerService {
@@ -20,6 +22,7 @@ public class PassengerServiceImpl implements PassengerService {
     //method assign value to passenger
     public Passenger assignValueToPassenger(Passenger passenger, PassengerRequest passengerRequest){
         passenger.setPassengerId(passengerRequest.getPassengerId());
+        passenger.setPassengerName(passengerRequest.getPassengerName());
         passenger.setPassport(passengerRequest.getPassport());
         passenger.setPaymentCardNumber(passengerRequest.getPaymentCardNumber());
         passenger.setUserId(userRepository.findByUserId(passengerRequest.getPassengerId()));
@@ -52,10 +55,43 @@ public class PassengerServiceImpl implements PassengerService {
     //POST
     @Override
     public Passenger insertNewPassenger(PassengerRequest passengerRequest){
-        Passenger passenger = new Passenger();
-        passenger = assignValueToPassenger(passenger, passengerRequest);
-        return passengerRepository.save(passenger);
+        Passenger foundPassenger = passengerRepository.findById(passengerRequest.getPassengerId()).orElse(null);
+        if(foundPassenger == null) {
+            return passengerRepository.save(assignValueToPassenger(new Passenger(), passengerRequest));
+        }
+            throw new CustomException("500", "Passenger Id Already Taken");
     }
-    //DELETE
     //
+
+    //DELETE
+    @Override
+    public Boolean deletePassengerById(Integer passengerId){
+        boolean exitPassenger = passengerRepository.existsById(passengerId);
+        if(exitPassenger) {
+            passengerRepository.deleteById(passengerId);
+            return true;
+        } else  {
+            return false;
+        }
+    }
+    //UPDATE
+    @Override
+    public Passenger updatePassenger(PassengerRequest newPassenger){
+        Passenger exitPassenger = passengerRepository.findById(newPassenger.getPassengerId()).orElse(null);
+        User user = userRepository.findByUserId(newPassenger.getUserId());
+        if (exitPassenger != null){
+            exitPassenger.setPassengerName(newPassenger.getPassengerName());
+            exitPassenger.setPassport(newPassenger.getPassport());
+            exitPassenger.setPaymentCardNumber(newPassenger.getPaymentCardNumber());
+            exitPassenger.setUserId(user);
+            return  passengerRepository.save(exitPassenger);
+        } else { // Don't have -> save new product
+            Passenger insertNewPassenger = insertNewPassenger(newPassenger);
+            return passengerRepository.save(insertNewPassenger);
+        }
+    }
+    @Override
+    public Passenger updatePassengerByIdPassenger(PassengerRequest newPassenger){
+        return null;
+    }
 }

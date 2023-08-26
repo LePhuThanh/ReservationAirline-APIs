@@ -15,7 +15,13 @@ public interface PassengerService {
     public List<Passenger> getPassengerByPassport(String passport);
     public List<Passenger>  getPassengerByUserId(Integer userId);
 
-
     public Passenger insertNewPassenger(PassengerRequest passengerRequest);
+
+    public Boolean deletePassengerById(Integer passengerId);
+
+    public Passenger updatePassenger(PassengerRequest newPassenger);
+    public Passenger updatePassengerByIdPassenger(PassengerRequest newPassenger);
+
+
 
 }
