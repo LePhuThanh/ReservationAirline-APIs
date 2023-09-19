@@ -1,7 +1,6 @@
 package com.practice.reservationAirline.services.Impl;
 
 import com.practice.reservationAirline.entities.User;
-import com.practice.reservationAirline.payloads.requests.RegisterRequest;
 import com.practice.reservationAirline.repositories.UserRepository;
 import com.practice.reservationAirline.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

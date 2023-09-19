@@ -11,8 +11,8 @@ INSERT INTO reservation_airline.airline VALUES (1003, 300);
 INSERT INTO reservation_airline.airline VALUES (2001, 250);
 INSERT INTO reservation_airline.airline VALUES (2002, 250);
 
-INSERT INTO reservation_airline.employee VALUES (1,1000 ,4);
-INSERT INTO reservation_airline.employee VALUES (2,500 ,5);
+INSERT INTO reservation_airline.employee VALUES (1,1000 ,4, "Tran Dang Minh Tam");
+INSERT INTO reservation_airline.employee VALUES (2,500 ,5, "Banh Quang Long");
 
 INSERT INTO reservation_airline.passenger VALUES (1,1, 'Nguyen Van Teo' ,231256488 ,5024532465538);
 INSERT INTO reservation_airline.passenger VALUES (2,2, 'Le Van Ti' ,231524746 ,5055632545587);

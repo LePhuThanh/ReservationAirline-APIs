@@ -36,7 +36,7 @@ public class Flight {
     private Date arrivalDate;
 
     @ManyToOne
-    Airline airlineNumber;
+    Airline airlineNumber; //airline
 
     @Column(name = "is_cancel")
     private Boolean isCancel;

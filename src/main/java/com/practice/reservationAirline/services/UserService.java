@@ -1,7 +1,6 @@
 package com.practice.reservationAirline.services;
 
 import com.practice.reservationAirline.entities.User;
-import com.practice.reservationAirline.payloads.requests.RegisterRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
