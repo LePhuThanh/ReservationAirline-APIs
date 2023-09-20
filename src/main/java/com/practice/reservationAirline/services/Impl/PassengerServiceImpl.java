@@ -70,9 +70,8 @@ public class PassengerServiceImpl implements PassengerService {
         if(exitPassenger) {
             passengerRepository.deleteById(passengerId);
             return true;
-        } else  {
-            return false;
         }
+        return false;
     }
     //UPDATE
     @Override

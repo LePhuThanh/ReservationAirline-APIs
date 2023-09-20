@@ -10,12 +10,12 @@ import java.util.List;
 
 @Service
 public interface FlightService {
-    public Flight addFlight(FlightRequest flightRequest);
+    public Flight insertFlight(FlightRequest flightRequest);
     public List<Flight> getAllFlight();
     public List<Flight> getFlightsByDate(Date date);
 
-    public List<Flight> getFlightsByDepartDestination(String departure, String destinate);
-    public Flight updateFlight(Flight flight);
-    public List<Flight> deleteFlight(Date date);
+    public List<Flight> getFlightsByDepartDestination(String departure, String destination);
+    public Flight updateFlight(Flight newFlight, String flightNumber);
+    public Boolean deleteFlight(Date date);
 
 }
