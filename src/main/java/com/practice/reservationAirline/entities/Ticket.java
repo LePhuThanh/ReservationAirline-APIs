@@ -22,7 +22,7 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "flight_number", referencedColumnName = "flight_number")
     @JsonBackReference
-    Flight flightNumber;
+    Flight flightNumber; //flight
 
     //==> Seat
     @ManyToOne

@@ -77,8 +77,7 @@ public class FlightController {
         }
         throw new CustomException("500", "Error when update Flight");
     }
-    @DeleteMapping(value = "/deleteFlight")
-    public ResponseEntity<DataResponse> deleteFlightByDate(@PathParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date){
+    @DeleteMapping(value = "/deleteFlight")    public ResponseEntity<DataResponse> deleteFlightByDate(@PathParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date){
         Boolean DeletedFlightList = flightService.deleteFlight(date);
         if(!DeletedFlightList){
             return ResponseEntity.status(HttpStatus.OK).body(
