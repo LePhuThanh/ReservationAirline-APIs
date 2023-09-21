@@ -44,12 +44,28 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Ticket updateTicket(TicketRequest request) {
-        return null;
+        Ticket existTicket = ticketRepository.findById(request.getTicketId()).orElse(null);
+        if(existTicket != null){
+            Flight flight = flightRepository.findByFlightNumber(request.getFlightNumber());
+            existTicket.setFlightNumber(flight);
+            Seat seat = seatRepository.findBySeatNumber(request.getSeatNumber());
+            existTicket.setSeatNumber(seat);
+            User user = userRepository.findByUserId(request.getUserId());
+            existTicket.setUserId(user);
+            existTicket.setIsDelete(request.getIsDelete());
+        }
+        throw new CustomException("404", "Not found ticket");
     }
 
     @Override
     public Boolean deleteTicket(Integer ticketId) {
-        return null;
+        try {
+            ticketRepository.deleteById(ticketId);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
     @Override

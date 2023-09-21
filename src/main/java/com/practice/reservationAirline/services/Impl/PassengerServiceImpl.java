@@ -66,28 +66,27 @@ public class PassengerServiceImpl implements PassengerService {
     //DELETE
     @Override
     public Boolean deletePassengerById(Integer passengerId){
-        boolean exitPassenger = passengerRepository.existsById(passengerId);
-        if(exitPassenger) {
+        try {
             passengerRepository.deleteById(passengerId);
             return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
         }
-        return false;
     }
     //UPDATE
     @Override
     public Passenger updatePassenger(PassengerRequest newPassenger){
-        Passenger exitPassenger = passengerRepository.findById(newPassenger.getPassengerId()).orElse(null);
-        User user = userRepository.findByUserId(newPassenger.getUserId());
-        if (exitPassenger != null){
-            exitPassenger.setPassengerName(newPassenger.getPassengerName());
-            exitPassenger.setPassport(newPassenger.getPassport());
-            exitPassenger.setPaymentCardNumber(newPassenger.getPaymentCardNumber());
-            exitPassenger.setUserId(user);
-            return  passengerRepository.save(exitPassenger);
-        } else { // Don't have -> save new product
-            Passenger insertNewPassenger = insertNewPassenger(newPassenger);
-            return passengerRepository.save(insertNewPassenger);
+        Passenger existPassenger = passengerRepository.findById(newPassenger.getPassengerId()).orElse(null);
+        if(existPassenger != null) {
+            User user = userRepository.findByUserId(newPassenger.getUserId());
+            existPassenger.setPassengerName(newPassenger.getPassengerName());
+            existPassenger.setPassport(newPassenger.getPassport());
+            existPassenger.setPaymentCardNumber(newPassenger.getPaymentCardNumber());
+            existPassenger.setUserId(user);
+            return passengerRepository.save(existPassenger);
         }
+        throw new CustomException("404", "Not found passenger");
     }
     @Override
     public Passenger updatePassengerByIdPassenger(PassengerRequest newPassenger){

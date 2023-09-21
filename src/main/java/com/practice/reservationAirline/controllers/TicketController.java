@@ -3,8 +3,10 @@ package com.practice.reservationAirline.controllers;
 import com.practice.reservationAirline.entities.Passenger;
 import com.practice.reservationAirline.entities.Ticket;
 import com.practice.reservationAirline.handlers.customExceptions.CustomException;
+import com.practice.reservationAirline.payloads.requests.PassengerRequest;
 import com.practice.reservationAirline.payloads.requests.TicketRequest;
 import com.practice.reservationAirline.payloads.responses.DataResponse;
+import com.practice.reservationAirline.repositories.TicketRepository;
 import com.practice.reservationAirline.services.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,6 +23,8 @@ public class TicketController {
     @Autowired
     @Qualifier("TicketServiceImpl")
     private TicketService ticketService;
+    @Autowired
+    private TicketRepository ticketRepository;
 
     @GetMapping(value = "/getAllTickets")
     public ResponseEntity<DataResponse> getAllTicket(){
@@ -77,6 +81,23 @@ public class TicketController {
         }
         throw new CustomException("500","Ticket is not found");
     }
-
+    @DeleteMapping(value = "/deleteTicket/{ticketId}") // delete ticket
+    public ResponseEntity<DataResponse> deletePassengerById (@PathVariable Integer ticketId) {
+        Boolean isDeleteTicket = ticketService.deleteTicket(ticketId);
+        if (isDeleteTicket) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new DataResponse("200", "Delete the ticket successfully", ""));
+        }
+        throw new CustomException("500", "Delete passenger failed");
+    }
+    @PutMapping(value = "/updateTicket")
+    public ResponseEntity<DataResponse> updateTicket(@RequestBody TicketRequest ticketRequest) {
+        Ticket updatedTicket = ticketService.updateTicket(ticketRequest);
+        if(updatedTicket != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new DataResponse("200", "Update the ticket successfully", updatedTicket));
+        }
+        throw new CustomException("500", "Update the ticket failed");
+    }
 
 }

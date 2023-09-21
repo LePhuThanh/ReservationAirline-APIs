@@ -68,9 +68,9 @@ public class FlightController {
         }
         throw new CustomException("404", "Not found any flight");
     }
-    @PutMapping(value = "/updateFlight/{id}")
-    public ResponseEntity<DataResponse> updateFlight(@RequestBody Flight newFlight, @PathVariable String flightNumber){
-        Flight updatedFlight = flightService.updateFlight(newFlight, flightNumber);
+    @PutMapping(value = "/updateFlight")
+    public ResponseEntity<DataResponse> updateFlight(@RequestBody FlightRequest newFlight){
+        Flight updatedFlight = flightService.updateFlight(newFlight);
         if(updatedFlight != null){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new DataResponse("200","Update flight successfully", updatedFlight));

@@ -15,7 +15,7 @@ public interface FlightService {
     public List<Flight> getFlightsByDate(Date date);
 
     public List<Flight> getFlightsByDepartDestination(String departure, String destination);
-    public Flight updateFlight(Flight newFlight, String flightNumber);
+    public Flight updateFlight(FlightRequest newFlight);
     public Boolean deleteFlight(Date date);
 
 }

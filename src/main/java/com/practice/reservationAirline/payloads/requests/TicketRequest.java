@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TicketRequest {
-    private int ticketId;
+    private Integer ticketId;
     private String flightNumber;
-    private int seatNumber;
-    private int userId;
+    private Integer seatNumber;
+    private Integer userId;
     private Boolean isDelete;
 }

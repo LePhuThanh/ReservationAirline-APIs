@@ -1,11 +1,12 @@
 package com.practice.reservationAirline.services.Impl;
 
-import com.practice.reservationAirline.entities.Flight;
-import com.practice.reservationAirline.entities.Passenger;
+import com.practice.reservationAirline.entities.*;
 import com.practice.reservationAirline.handlers.customExceptions.CustomException;
 import com.practice.reservationAirline.payloads.requests.FlightRequest;
+import com.practice.reservationAirline.payloads.requests.PassengerRequest;
 import com.practice.reservationAirline.repositories.AirlineRepository;
 import com.practice.reservationAirline.repositories.FlightRepository;
+import com.practice.reservationAirline.repositories.TicketRepository;
 import com.practice.reservationAirline.services.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,8 @@ public class FlightServiceImpl implements FlightService {
     private FlightRepository flightRepository;
     @Autowired
     AirlineRepository airlineRepository;
+    @Autowired
+    private TicketRepository ticketRepository;
 
     //method assign value to flight
     public Flight assignValueToFlight(Flight flight, FlightRequest flightRequest){
@@ -64,22 +67,19 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public Flight updateFlight(Flight newFlight, String flightNumber) {
-        Flight updatedFlight = flightRepository.findById(flightNumber)
-                .map(flight -> { //Have => mapping all value update new information
-//                    flight.setAirlineNumber(newFlight.getAirlineNumber());
-                    flight.setDestination(newFlight.getDestination());
-                    flight.setDeparture(newFlight.getDeparture());
-                    flight.setDepartureDate(newFlight.getDepartureDate());
-                    flight.setDepartureTime(newFlight.getDepartureTime());
-                    flight.setArrivalDate(newFlight.getArrivalDate());
-                    flight.setIsCancel(newFlight.getIsCancel());
-                    return flightRepository.save(flight);
-                }).orElseGet(() -> { //Don't have -> save new flight
-                    newFlight.setFlightNumber(flightNumber);
-                    return flightRepository.save(newFlight);
-                });
-        return  updatedFlight; // Returns updated flights or new flights.
+    public Flight updateFlight(FlightRequest newFlight) {
+        Flight existFlight = flightRepository.findById(newFlight.getFlightNumber()).orElse(null);
+        if(existFlight != null) {
+            Airline Airline = airlineRepository.findAirlineByAirlineNumber(newFlight.getAirlineNumber());
+            existFlight.setDestination(newFlight.getDestination());
+            existFlight.setDeparture(newFlight.getDeparture());
+            existFlight.setDepartureDate(newFlight.getDepartureDate());
+            existFlight.setDepartureTime(newFlight.getDepartureTime());
+            existFlight.setArrivalDate(newFlight.getArrivalDate());
+            existFlight.setAirlineNumber(Airline);
+            return flightRepository.save(existFlight);
+        }
+        throw new CustomException("404", "Not found flight");
     }
 
     //Delete all flights with the same departure date and have not been canceled
